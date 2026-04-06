@@ -27,8 +27,8 @@ This project was created to learn, experiment, and deploy a fully functional, pr
 - MySQL Database
 
 **Deployment**
-- Render / Railway (Backend)
-- Netlify / Vercel (Frontend)
+- Railway (Backend)
+- Netlify (Frontend)
 
 ---
 
