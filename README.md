@@ -1,14 +1,26 @@
-# 🚀 Portfolio Dashboard
+# 📊 Portfolio Dashboard – Full Stack Developer Showcase
 
-> A full-stack personal portfolio application built with **React + Spring Boot**, designed to showcase projects, skills, and achievements in an interactive, professional way.
+🚀 Live Demo: https://arthur-portfolio-dashboard.netlify.app
 
 ---
 
-## 📖 Overview
+## 📌 Overview
 
-**Portfolio Dashboard** goes beyond a static resume site — it’s a living web app featuring admin-only CRUD management, dynamic UI updates, secure backend endpoints, and a real contact form that sends messages directly to your inbox.
+A full-stack portfolio dashboard designed to showcase projects through a live, interactive interface.
 
-This project was created to learn, experiment, and deploy a fully functional, production-ready portfolio from scratch.
+Unlike traditional static resumes, this application demonstrates real-world engineering practices including frontend-backend separation, API-driven architecture, and cloud deployment.
+
+---
+
+## 🎯 Purpose
+
+Traditional resumes don’t effectively demonstrate engineering capabilities.
+
+This project was built to:
+- Showcase full-stack development skills  
+- Demonstrate real-world deployment workflows  
+- Provide a dynamic and interactive portfolio experience  
+- Serve as a live, evolving representation of my work  
 
 ---
 
@@ -22,7 +34,7 @@ This project was created to learn, experiment, and deploy a fully functional, pr
 
 **Backend**
 - Spring Boot (Java 17)
-- RESTful APIs
+- REST APIs
 - Spring Mail (JavaMailSender)
 - MySQL Database
 
