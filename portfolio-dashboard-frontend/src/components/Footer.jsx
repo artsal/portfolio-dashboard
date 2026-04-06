@@ -24,7 +24,7 @@ const Footer = () => {
     const authHeader = "Basic " + btoa(`${username}:${password}`);
 
     try {
-      const res = await fetch(`${API_URL}/auth/validate`, {
+      const res = await fetch(`${API_BASE_URL}/auth/validate`, {
         method: "GET",
         headers: {
           Authorization: authHeader,
