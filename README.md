@@ -71,5 +71,7 @@ This project was built to:
 
 ---
 
-## 🧩 Architecture
+## 📸 Screenshots
+
+(Add screenshots here to improve visual presentation)
 
