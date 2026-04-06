@@ -30,27 +30,20 @@ public class SecurityConfig {
         http
                 // Disable CSRF for API use cases (we’re using tokenless REST)
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {
-                }) // ✅ enable CORS handling
+                .cors(cors -> {}) // ✅ enable CORS handling
 
-                // Authorization rules
+        // Authorization rules
                 .authorizeHttpRequests(auth -> auth
-//                              // 🔒 Protect auth endpoint
-                                .requestMatchers("/api/auth/**").authenticated()
-
-                                // 🌐 Public endpoints
-                                .requestMatchers(HttpMethod.GET, "/api/overview/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/projects/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/skills/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
-
-                                // 🔒 Protected operations
-                                .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
-                                .requestMatchers(HttpMethod.PUT, "/api/**").authenticated()
-                                .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
-
-                                // Everything else
-                                .anyRequest().permitAll()
+                        // Public access for GET requests
+                        .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+                        // Allow contact form submissions without authentication
+                        .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
+                        // Require authentication for all other data-modifying requests
+                        .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").authenticated()
+                        // Everything else allowed
+                        .anyRequest().permitAll()
                                       )
 
                 // Enable HTTP Basic auth (modern style)
