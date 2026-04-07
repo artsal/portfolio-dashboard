@@ -73,5 +73,5 @@ This project was built to:
 
 ## 📸 Screenshots
 
-(Add screenshots here to improve visual presentation)
+(Coming Soon!)
 
