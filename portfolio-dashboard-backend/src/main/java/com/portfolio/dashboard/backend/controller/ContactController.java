@@ -52,7 +52,7 @@ public class ContactController {
 
             // 📨 1. Email to YOU (portfolio owner)
             String ownerJson = "{"
-                    + "\"from\": \"Portfolio <onboarding@resend.dev>\","
+                    + "\"from\": \"Portfolio Dashboard <onboarding@resend.dev>\","
                     + "\"to\": [\"" + recipientEmail + "\"],"
                     + "\"subject\": \"New message from " + req.getName() + "\","
                     + "\"text\": \"You’ve received a new message from your portfolio site:\\n\\n"
@@ -75,9 +75,9 @@ public class ContactController {
 
             // 💌 2. Auto-reply to visitor
             String replyJson = "{"
-                    + "\"from\": \"Arthur <onboarding@resend.dev>\","
+                    + "\"from\": \"Arthur's Portfolio Dashboard <onboarding@resend.dev>\","
                     + "\"to\": [\"" + req.getEmail() + "\"],"
-                    + "\"subject\": \"Thanks for contacting Arthur's Portfolio Dashboard\","
+                    + "\"subject\": \"Thanks for contacting Arthur Salla\","
                     + "\"text\": \"Hi " + req.getName() + ",\\n\\n"
                     + "Thank you for reaching out! I’ve received your message and will respond soon.\\n\\n"
                     + "Best regards,\\nArthur\""
