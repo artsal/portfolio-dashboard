@@ -6,30 +6,33 @@ import com.portfolio.dashboard.backend.repository.ContactMessageRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 @RestController
 @RequestMapping("/api/contact")
 @CrossOrigin
 public class ContactController {
 
-    private final JavaMailSender mailSender;
     private final ContactMessageRepository contactRepo;
 
-    // Inject recipient address from application.properties (your email)
     @Value("${contact.recipient.email}")
     private String recipientEmail;
 
-    public ContactController(JavaMailSender mailSender,
-                             ContactMessageRepository contactRepo) {
-        this.mailSender = mailSender;
+    @Value("${RESEND_API_KEY}")
+    private String resendApiKey;
+
+    public ContactController(ContactMessageRepository contactRepo) {
         this.contactRepo = contactRepo;
     }
 
     @PostMapping
     public ResponseEntity<String> sendMail(@RequestBody ContactRequest req) {
+
         ContactMessage log = new ContactMessage();
         log.setName(req.getName());
         log.setEmail(req.getEmail());
@@ -39,55 +42,70 @@ public class ContactController {
         try {
             // 🧩 Honeypot spam check
             if (req.getWebsite() != null && !req.getWebsite().trim().isEmpty()) {
-                // “website” is a hidden field; if filled, it’s probably a bot
                 log.setStatus("SPAM");
                 contactRepo.save(log);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body("Spam detected. Message ignored.");
             }
 
-            // 📨 1. Email to portfolio owner (you)
-            SimpleMailMessage ownerMessage = new SimpleMailMessage();
-            ownerMessage.setTo(recipientEmail);
-            ownerMessage.setSubject("📬 New message from " + req.getName());
-            ownerMessage.setText(
-                    "You’ve received a new message from your portfolio site:\n\n" +
-                            "--------------------------------------------\n" +
-                            "Name: " + req.getName() + "\n" +
-                            "Email: " + req.getEmail() + "\n\n" +
-                            req.getMessage() + "\n" +
-                            "--------------------------------------------\n\n" +
-                            "Sent via Arthur’s Portfolio Dashboard."
-                                );
-            ownerMessage.setFrom("Arthur’s Portfolio Contact Form <" + recipientEmail + ">");
-            mailSender.send(ownerMessage);
+            HttpClient client = HttpClient.newHttpClient();
+
+            // 📨 1. Email to YOU (portfolio owner)
+            String ownerJson = "{"
+                    + "\"from\": \"Portfolio <onboarding@resend.dev>\","
+                    + "\"to\": [\"" + recipientEmail + "\"],"
+                    + "\"subject\": \"New message from " + req.getName() + "\","
+                    + "\"text\": \"You’ve received a new message from your portfolio site:\\n\\n"
+                    + "--------------------------------------------\\n"
+                    + "Name: " + req.getName() + "\\n"
+                    + "Email: " + req.getEmail() + "\\n\\n"
+                    + req.getMessage().replace("\"", "\\\"") + "\\n"
+                    + "--------------------------------------------\\n\\n"
+                    + "Sent via Arthur’s Portfolio Dashboard.\""
+                    + "}";
+
+            HttpRequest ownerRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.resend.com/emails"))
+                    .header("Authorization", "Bearer " + resendApiKey)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(ownerJson))
+                    .build();
+
+            client.send(ownerRequest, HttpResponse.BodyHandlers.ofString());
 
             // 💌 2. Auto-reply to visitor
-            SimpleMailMessage reply = new SimpleMailMessage();
-            reply.setTo(req.getEmail());
-            reply.setSubject("Thanks for contacting Arthur Salla");
-            reply.setText(
-                    "Hi " + req.getName() + ",\n\n" +
-                            "Thank you for reaching out through my portfolio dashboard! 🙏\n" +
-                            "I’ve received your message and will get back to you as soon as possible.\n\n" +
-                            "Best regards,\n" +
-                            "Arthur\n" +
-                            "— Portfolio Dashboard\n\n" +
-                            "📫 This is an automated confirmation."
-                         );
-            reply.setFrom("Arthur’s Portfolio Contact Form <" + recipientEmail + ">");
-            mailSender.send(reply);
+            String replyJson = "{"
+                    + "\"from\": \"Arthur <onboarding@resend.dev>\","
+                    + "\"to\": [\"" + req.getEmail() + "\"],"
+                    + "\"subject\": \"Thanks for contacting Arthur's Portfolio Dashboard\","
+                    + "\"text\": \"Hi " + req.getName() + ",\\n\\n"
+                    + "Thank you for reaching out! I’ve received your message and will respond soon.\\n\\n"
+                    + "Best regards,\\nArthur\""
+                    + "}";
 
+            HttpRequest replyRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.resend.com/emails"))
+                    .header("Authorization", "Bearer " + resendApiKey)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(replyJson))
+                    .build();
+
+            client.send(replyRequest, HttpResponse.BodyHandlers.ofString());
+
+            // ✅ Success
             log.setStatus("SENT");
             contactRepo.save(log);
+
             return ResponseEntity.ok("Message sent successfully");
 
         } catch (Exception e) {
+            // ⚠️ Fail gracefully (do NOT break UX)
             log.setStatus("FAILED");
             contactRepo.save(log);
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error sending message: " + e.getMessage());
+
+            System.out.println("Resend error: " + e.getMessage());
+
+            return ResponseEntity.ok("Message received (email may be delayed)");
         }
     }
 }

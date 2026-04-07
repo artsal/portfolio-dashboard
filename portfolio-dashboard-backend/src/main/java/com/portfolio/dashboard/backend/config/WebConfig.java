@@ -15,7 +15,7 @@ public class WebConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ Allow these origins (adjust Netlify domain once live)
+        // ✅ Allow these origins
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",     // Vite dev
                 "http://localhost:4173",     // Vite preview
