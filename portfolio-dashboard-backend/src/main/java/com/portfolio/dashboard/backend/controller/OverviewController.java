@@ -50,7 +50,7 @@ public class OverviewController {
                                   ));
 
         // ⏳ Experience
-        int yearsExperience = 10; // static for now
+        int yearsExperience = 16; // static for now
         stats.put("experience", Map.of("years", yearsExperience));
 
         // 🏆 Certifications
