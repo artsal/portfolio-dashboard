@@ -31,7 +31,7 @@ const Overview = () => {
         setStats({
           projects: { latest: "Demo Project", count: 1 },
           skills: { top: ["React", "Java", "MySQL"], count: 6 },
-          experience: { years: 10 },
+          experience: { years: 16 },
           certifications: { latest: "None", count: 0 },
         });
       } finally {
@@ -106,7 +106,7 @@ const Overview = () => {
       )}
 
       <p className="text-gray-500 mb-6">
-        A quick summary of your portfolio highlights and progress.
+        A quick summary of my portfolio highlights and progress.
       </p>
 
       {/* Cards */}
