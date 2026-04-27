@@ -71,7 +71,9 @@ This project was built to:
 
 ---
 
-## 📸 Screenshots
+## 🏗️ Architecture
 
-(Coming Soon!)
+This project follows a clean full-stack architecture with a React frontend, Spring Boot backend, and MySQL database, deployed on Railway.
+
+![Architecture Diagram](./assets/architecture.png)
 
