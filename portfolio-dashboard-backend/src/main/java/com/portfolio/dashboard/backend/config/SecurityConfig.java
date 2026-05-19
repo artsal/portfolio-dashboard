@@ -18,10 +18,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     // 🔐 Read credentials from environment variables or properties
-    @Value("${VITE_ADMIN_USERNAME}")
+    @Value("${app.admin.username}")
     private String adminUsername;
 
-    @Value("${VITE_ADMIN_PASSWORD}")
+    @Value("${app.admin.password}")
     private String adminPassword;
 
     // ✅ Main Security Configuration
