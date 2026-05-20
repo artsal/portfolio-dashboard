@@ -1,6 +1,7 @@
 ![React](https://img.shields.io/badge/Frontend-React-blue)
 ![Spring Boot](https://img.shields.io/badge/Backend-SpringBoot-green)
 ![MySQL](https://img.shields.io/badge/Database-MySQL-orange)
+[![CI](https://github.com/artsal/portfolio-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/artsal/portfolio-dashboard/actions/workflows/ci.yml)
 
 # 📊 Portfolio Dashboard – Full Stack Developer Showcase
 
