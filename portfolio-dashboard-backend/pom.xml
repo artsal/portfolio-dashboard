@@ -121,6 +121,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/portfolio/dashboard/backend/config/*</exclude>
+                        <exclude>com/portfolio/dashboard/backend/dto/*</exclude>
+                        <exclude>com/portfolio/dashboard/backend/model/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
