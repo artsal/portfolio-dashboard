@@ -88,8 +88,8 @@ This project follows a clean full-stack architecture with a React frontend, Spri
 
 The Spring Boot backend exposes OpenAPI documentation through Swagger UI.
 
-1. Start the backend from `portfolio-dashboard-backend`.
-2. Open Swagger UI at `https://portfolio-dashboard-backend-production.up.railway.app/pdbapp/swagger-ui/index.html`.
+1. Start the backend from portfolio-dashboard-backend
+2. Open Swagger UI at https://portfolio-dashboard-backend-production.up.railway.app/pdbapp/swagger-ui/index.html
 3. Open the raw OpenAPI JSON at `https://portfolio-dashboard-backend-production.up.railway.app/pdbapp/v3/api-docs`.
 
 Admin-only create, update, and delete endpoints use HTTP Basic authentication with the configured `APP_ADMIN_USERNAME` and `APP_ADMIN_PASSWORD` values.
